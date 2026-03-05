@@ -22,13 +22,11 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Build (if needed)
-      run: npm run build || echo "No build step defined"
-
     - name: Start Bot
       run: |
         echo "Starting WhatsApp Bot..."
-        nohup node index.js &
-
-    - name: Keep alive log
-      run: tail -f nohup.out
+        # Lance le bot et redirige stdout/stderr dans un fichier log
+        nohup node index.js > bot.log 2>&1 &
+        sleep 5
+        # Affiche les 50 dernières lignes du log
+        tail -n 50 bot.log
